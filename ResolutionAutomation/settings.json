@@ -7,7 +7,7 @@
     "resolutionCheckIntervalMs": 200,
     "dpiScaling": {
         "enabled": true,
-        "override": 168,
+        "override": 1.5,
         "scaleMultiplier": 1.0
     },
     // This setting allows you to specify a preferred screen resolution that your application will always revert to when not overridden by other settings. 
@@ -49,4 +49,3 @@
     },
     "sunshineConfigPath": "F:\\Sunshine\\config\\sunshine.conf"
 }
-

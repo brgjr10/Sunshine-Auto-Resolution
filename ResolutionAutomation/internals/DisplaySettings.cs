@@ -32,6 +32,25 @@ public class DisplaySettings
         );
     }
 
+    [DllImport("Magnification.dll", SetLastError = true)]
+    public static extern bool MagInitialize();
+
+    [DllImport("Magnification.dll", SetLastError = true)]
+    public static extern bool MagSetFullscreenTransform(float mag, int xOffset, int yOffset);
+
+    [DllImport("Magnification.dll", SetLastError = true)]
+    public static extern bool MagSetFullscreenColorEffect(
+        ref MagColorEffect pEffect);
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct MagColorEffect
+    {
+        public float R1, G1, B1, A1;
+        public float R2, G2, B2, A2;
+        public float R3, G3, B3, A3;
+        public float R4, G4, B4, A4;
+    }
+
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public struct DEVMODE
     {

@@ -37,17 +37,19 @@ function OnStreamStart() {
     }
     $expectedRes = Join-Overrides -width $width -height $height -refresh $refresh
     $expectedRes = Set-10bitCompatibilityIfApplicable -width $expectedRes.Width -height $expectedRes.Height -refresh $expectedRes.Refresh
-    # DPI scaling: increase display scale for higher client resolutions
+    # Magnification: zoom desktop for smaller/high-PPI client displays
     if ($settings.dpiScaling.enabled -eq $true) {
-        $originalDpi = Get-DesktopDpi
-        $script:arguments['original_dpi'] = $originalDpi
+        $script:arguments['original_zoom'] = 1.0
         if ($settings.dpiScaling.override -gt 0) {
-            Set-DesktopDpi $settings.dpiScaling.override
+            $zoom = $settings.dpiScaling.override
         } else {
             $hostNative = $script:arguments['original_resolution']
-            $newDpi = Calculate-DpiForClient $expectedRes.Width $hostNative.Width
-            Write-Host "Auto DPi: $($hostNative.Width) -> $($expectedRes.Width), DPI $originalDpi -> $newDpi"
-            Set-DesktopDpi $newDpi
+            $zoom = Calculate-ZoomForClient $expectedRes.Width $hostNative.Width
+        }
+        if ($zoom -gt 1.0) {
+            Write-Host "Setting desktop magnification to $([Math]::Round($zoom, 2))x"
+            Set-DesktopZoom $zoom
+            $script:arguments['original_zoom'] = $zoom
         }
     }
     # If highest refresh rate is enabled in settings, override the refresh rate with the highest available
@@ -81,9 +83,10 @@ function OnStreamEnd($kwargs) {
     Set-ScreenResolution -Width $originalResolution.Width -Height $originalResolution.Height -Freq $originalResolution.Refresh   
     Write-Debug "Screen resolution set to: $($originalResolution.Width) x $($originalResolution.Height) x $($originalResolution.Refresh)"
 
-    # Restore original DPI if scaling was applied
-    if ($settings.dpiScaling.enabled -eq $true -and $kwargs['original_dpi']) {
-        Set-DesktopDpi $kwargs['original_dpi']
+    # Restore magnification if zoom was applied
+    if ($settings.dpiScaling.enabled -eq $true -and $kwargs['original_zoom'] -gt 1.0) {
+        Write-Host "Resetting desktop magnification to 1.0x"
+        Set-DesktopZoom 1.0
     }
 
     return $true
@@ -318,42 +321,20 @@ function Get-HighestRefreshRateForResolution($width, $height) {
     return $highestRefresh
 }
 
-function Get-DesktopDpi() {
-    $devMode = New-Object DisplaySettings+DEVMODE
-    $devMode.dmSize = [System.Runtime.InteropServices.Marshal]::SizeOf($devMode)
-    if ([DisplaySettings]::EnumDisplaySettings([NullString]::Value, -1, [ref]$devMode)) {
-        return $devMode.dmLogPixels
+function Set-DesktopZoom([float]$zoom) {
+    if (-not [DisplaySettings]::MagInitialize()) {
+        Write-Warning "Magnification API not available"
+        return
     }
-    return 96
+    [DisplaySettings]::MagSetFullscreenTransform($zoom, 0, 0) | Out-Null
+    Write-Host "Desktop magnification set to $([Math]::Round($zoom, 2))x"
 }
 
-function Set-DesktopDpi([int]$dpi) {
-    $registryPath = "HKCU:\Control Panel\Desktop"
-    Set-ItemProperty -Path $registryPath -Name "LogPixels" -Value $dpi -ErrorAction SilentlyContinue
-    Set-ItemProperty -Path $registryPath -Name "Win8DpiScaling" -Value 1 -ErrorAction SilentlyContinue
-
-    [DisplaySettings]::BroadcastDpiChange() | Out-Null
-
-    $devMode = New-Object DisplaySettings+DEVMODE
-    $devMode.dmSize = [System.Runtime.InteropServices.Marshal]::SizeOf($devMode)
-    if ([DisplaySettings]::EnumDisplaySettings([NullString]::Value, -1, [ref]$devMode)) {
-        $devMode.dmLogPixels = $dpi
-        $devMode.dmFields = $devMode.dmFields -bor [DisplaySettings]::DM_LOGPIXELS
-        [DisplaySettings]::ChangeDisplaySettings([ref]$devMode, 0) | Out-Null
-    }
-    Write-Host "Display DPI set to $dpi"
-}
-
-function Calculate-DpiForClient($clientWidth, $hostWidth) {
+function Calculate-ZoomForClient($clientWidth, $hostWidth) {
     $ratio = $clientWidth / $hostWidth
     $multiplier = if ($settings.dpiScaling.scaleMultiplier -gt 0) { $settings.dpiScaling.scaleMultiplier } else { 1.0 }
-    if ($ratio -gt 1.0) {
-        $effectiveRatio = $ratio * $multiplier
-    } else {
-        $effectiveRatio = $ratio
-    }
-    $dpi = [Math]::Round(96 * $effectiveRatio / 24) * 24
-    if ($dpi -lt 96) { $dpi = 96 }
-    if ($dpi -gt 240) { $dpi = 240 }
-    return $dpi
+    $zoom = $ratio * $multiplier
+    if ($zoom -lt 1.0) { $zoom = 1.0 }
+    if ($zoom -gt 3.0) { $zoom = 3.0 }
+    return [Math]::Round($zoom, 2)
 }
