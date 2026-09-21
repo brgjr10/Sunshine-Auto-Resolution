@@ -8,7 +8,7 @@
     "dpiScaling": {
         "enabled": true,
         "override": 0,
-        "scaleMultiplier": 1.25
+        "scaleMultiplier": 2.0
     },
     // This setting allows you to specify a preferred screen resolution that your application will always revert to when not overridden by other settings. 
     // The 'width' and 'height' fields specify the dimensions of the preferred resolution, and the 'refresh' field specifies the refresh rate.

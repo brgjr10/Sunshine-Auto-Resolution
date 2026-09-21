@@ -347,7 +347,6 @@ function Set-DesktopDpi([int]$dpi) {
 function Calculate-DpiForClient($clientWidth, $hostWidth) {
     $ratio = $clientWidth / $hostWidth
     $multiplier = if ($settings.dpiScaling.scaleMultiplier -gt 0) { $settings.dpiScaling.scaleMultiplier } else { 1.0 }
-    # Only apply multiplier when upscaling (client resolution > host native)
     if ($ratio -gt 1.0) {
         $effectiveRatio = $ratio * $multiplier
     } else {
@@ -355,5 +354,6 @@ function Calculate-DpiForClient($clientWidth, $hostWidth) {
     }
     $dpi = [Math]::Round(96 * $effectiveRatio / 24) * 24
     if ($dpi -lt 96) { $dpi = 96 }
+    if ($dpi -gt 240) { $dpi = 240 }
     return $dpi
 }
