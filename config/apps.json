@@ -1,0 +1,71 @@
+{
+    "apps": [
+        {
+            "image-path": "desktop.png",
+            "name": "Desktop"
+        },
+        {
+            "auto-detach": true,
+            "cmd": "",
+            "detached": [
+                "powershell.exe -executionpolicy bypass -windowstyle hidden -file \"F:\\Sunshine\\scripts\\SplashScreen.ps1\" -TimeoutSeconds 30 -WatchProcess \"Playnite*\"",
+                "cmd /c \"F:\\Playnite\\Playnite\\Playnite.FullscreenApp.exe\""
+            ],
+            "elevated": false,
+            "exclude-global-prep-cmd": false,
+            "exit-timeout": 5,
+            "image-path": "F:\\Photos\\1dd9c92b42310b86a936dda10293c379.png",
+            "name": "Playnite",
+            "output": "",
+            "prep-cmd": [
+                {
+                    "do": "",
+                    "undo": "powershell.exe -executionpolicy bypass -file \"F:\\Sunshine\\scripts\\SplashScreen.ps1\" -Kill"
+                }
+            ],
+            "wait-all": true,
+            "working-dir": ""
+        },
+        {
+            "auto-detach": true,
+            "cmd": "steam://open/bigpicture",
+            "detached": [
+                "powershell.exe -executionpolicy bypass -windowstyle hidden -file \"F:\\Sunshine\\scripts\\SplashScreen.ps1\" -TimeoutSeconds 30 -WatchProcess \"steam*\""
+            ],
+            "image-path": "steam.png",
+            "name": "Steam Big Picture",
+            "prep-cmd": [
+                {
+                    "do": "",
+                    "undo": "powershell.exe -executionpolicy bypass -file \"F:\\Sunshine\\scripts\\SplashScreen.ps1\" -Kill"
+                },
+                {
+                    "do": "",
+                    "undo": "steam://close/bigpicture"
+                }
+            ],
+            "wait-all": true
+        },
+        {
+            "auto-detach": true,
+            "cmd": "cmd /c \"C:\\Users\\brgjr\\AppData\\Roaming\\Apps\\VSCodium\\VSCodium.exe\"",
+            "detached": [
+                "powershell.exe -executionpolicy bypass -windowstyle hidden -file \"F:\\Sunshine\\scripts\\SplashScreen.ps1\" -TimeoutSeconds 30 -WatchProcess \"VSCodium*\""
+            ],
+            "elevated": false,
+            "exclude-global-prep-cmd": false,
+            "exit-timeout": 5,
+            "image-path": "F:\\Photos\\3e0604c35f3ba7eedfc33396560b20f5.png",
+            "name": "VSCodium",
+            "output": "",
+            "prep-cmd": [
+                {
+                    "do": "",
+                    "undo": "powershell.exe -executionpolicy bypass -file \"F:\\Sunshine\\scripts\\SplashScreen.ps1\" -Kill"
+                }
+            ],
+            "wait-all": true
+        }
+    ],
+    "env": {}
+}

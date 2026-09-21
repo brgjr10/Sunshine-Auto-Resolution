@@ -1,0 +1,16 @@
+{
+    "username": "deadvision",
+    "salt": "MwSUGjk2F2uDXhpd",
+    "password": "C2BC44731B09788D5407552BE2CCCFD8683866558DEED278C6D94C48A8F768BB",
+    "root": {
+        "uniqueid": "73CED71D-B0B2-6F01-FB96-CF523E5185E2",
+        "named_devices": [
+            {
+                "name": "iPad",
+                "cert": "-----BEGIN CERTIFICATE-----\nMIICvzCCAaegAwIBAgIBADANBgkqhkiG9w0BAQsFADAjMSEwHwYDVQQDDBhOVklE\nSUEgR2FtZVN0cmVhbSBDbGllbnQwHhcNMjYwOTIxMDM1NjA1WhcNNDYwOTE2MDM1\nNjA1WjAjMSEwHwYDVQQDDBhOVklESUEgR2FtZVN0cmVhbSBDbGllbnQwggEiMA0G\nCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCU9s6\/p6ZSuz\/iL11H5S+itCpABhi7\nLoSAIa5y\/hthjn+fqnR3AWCRHYgbWe1hxRs5tRR3vS8\/DnG0OfBWRgSjDM+eXfzA\n7tpVWIMr8KnA3AD1F3hXe8hug8UiF5sXlPWCnM4U5xE5vydtIitlmIgzNnKfrGPf\na9iOV1ngAIfObdNBar9CBicdq7cjNG4oNWo1Ip2XZwzduZ2hGx1yQnZeoUl5RTzm\n7N+eKXYWdTkvPNCdOYj8L8ukm+6gaqx5MXLXo7oqVYsVf5Opou3IwYIDgPQWBusR\npzAi12O\/lGvdeYV14ozI8pDojahJOXhrlStXe8oIxoL0RxY3slmRmdwJAgMBAAEw\nDQYJKoZIhvcNAQELBQADggEBAFCo\/xLVf\/ba7AmUvtynwu5NUz+peFqtfPcalMMj\nXfilzBU4WJTtgqAcq59eA0Er3JoKTMvjnTV5vTGMusIpUVStee3LV2v3lbnk9YhH\ncZn7Pz0y9YWsb5syqc\/837KqEiZSugWq5MA7qBN9SdUgKFp3+ATS8bTR3oiTmRxj\nNuYIvMgB+mskA0GCgoK0uah5K4E\/xDirIEEmfLdk172ymA9JHpIsZgcuPj55DjHY\nTOgquev5jHdgDL9uaf3bvpaF+1sh6KNXem+B9rksuHpV+BptcAjxXSDgcph44ucq\nngcoqu27O4UN8Dmn6ZD3J5ncaNdLxnzMUgpNvZQ9O8rLKic=\n-----END CERTIFICATE-----\n",
+                "uuid": "9FBB9AEC-D84F-B32D-E90B-27F06F1B7CBF",
+                "enabled": "true"
+            }
+        ]
+    }
+}
